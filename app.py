@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask, request
+import re
 
 app = Flask(__name__)
 
@@ -33,6 +34,10 @@ def perform_query():
         if 'map' in req_dict.keys():
             boo = list(map(lambda v: v.split(), file_data))
             file_data = [i[int(req_dict.get('map'))] for i in boo]
+        if 'regex' in req_dict.keys():
+            regex = re.compile(req_dict.get('regex'))
+            print(req_dict.get('regex'))
+            file_data = [item for item in file_data if regex.search(item)]
         if 'unique' in req_dict.keys():
             file_data = list(set(file_data))
         if 'sort' in req_dict.keys():
